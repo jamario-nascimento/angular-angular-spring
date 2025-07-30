@@ -8,6 +8,8 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { RouterOutlet } from '@angular/router';
 
+
+
 @Component({
   selector: 'app-root',
   providers: [provideAnimations()],
@@ -18,10 +20,9 @@ import { RouterOutlet } from '@angular/router';
     MatCardModule,
     MatIconModule,
     MatInputModule,
-    HttpClientModule,
   ],
   templateUrl: './app.html',
-  styleUrl: './app.scss'
+  styleUrl: './app.scss',
 })
 export class App {
   protected readonly title = signal('angular-angular-spring');

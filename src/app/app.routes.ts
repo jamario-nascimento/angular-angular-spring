@@ -5,7 +5,7 @@ import { Courses } from './courses/courses';
 export const routes: Routes = [
   {
     path: '',
-    component: App,
+     pathMatch: 'full', redirectTo: 'courses'
    },
    {
     path: 'courses',
