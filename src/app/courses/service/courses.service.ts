@@ -11,9 +11,9 @@ import { Course } from '../model/course';
 export class CoursesServices {
 
   // Altere esta linha:
-  private coursesUrl = 'assets/courses2.json';
+  private readonly coursesUrl = 'api/courses';
 
-  constructor(private _httpClient: HttpClient){ }
+  constructor(private readonly _httpClient: HttpClient){ }
 
   list() {
     return this._httpClient.get<Course[]>(this.coursesUrl)

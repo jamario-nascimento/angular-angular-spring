@@ -1,3 +1,4 @@
+import { routes } from './../app.routes';
 // src/app/courses/courses.ts
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
@@ -9,11 +10,12 @@ import { Course } from './model/course';
 import { CoursesServices } from './service/courses.service';
 import { ErrorDialog } from '../shared/components/error-dialog/error-dialog';
 import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-courses',
   standalone: true,
-  imports: [CommonModule, MaterialModule,ErrorDialog],
+  imports: [CommonModule, MaterialModule],
   templateUrl: './courses.html',
   styleUrl: './courses.scss',
 })
@@ -25,7 +27,9 @@ export class Courses implements OnInit {
 
   constructor(
     private _coursesService: CoursesServices,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private router: Router,
+    private route: ActivatedRoute
   ) {
     // Carrega os cursos e usa 'startWith([])' para inicializar a tabela com um array vazio
     this.courses$ = this._coursesService.list().pipe(
@@ -44,7 +48,7 @@ export class Courses implements OnInit {
 
   // Métodos de ação (placeholder)
   onAdd(): void {
-    console.log('Adicionar novo curso');
+    this.router.navigate(['new'], {relativeTo:this.route})
   }
 
   onEdit(course: Course): void {

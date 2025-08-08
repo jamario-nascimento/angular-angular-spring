@@ -7,6 +7,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTableModule } from '@angular/material/table';
 
+import { CategoryPipe } from './pipes/category-pipe';
+
 @NgModule({
   declarations: [],
   imports: [
@@ -17,6 +19,7 @@ import { MatTableModule } from '@angular/material/table';
     MatCard,
     MatProgressSpinnerModule,
     MatDialogModule,
+    CategoryPipe,
   ],
   exports: [
     CommonModule,
@@ -26,7 +29,7 @@ import { MatTableModule } from '@angular/material/table';
     MatCard,
     MatProgressSpinnerModule,
     MatDialogModule,
-
+    CategoryPipe,
   ],
 })
 export class MaterialModule {}
