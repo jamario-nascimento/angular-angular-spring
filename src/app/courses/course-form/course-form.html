@@ -1,4 +1,4 @@
-<mat-card class="mat-card" appearance="outlined">
+<mat-card class="mat-card">
   <mat-toolbar>Detalhes do Curso</mat-toolbar>
 
   <mat-card-content>
@@ -12,16 +12,15 @@
       </mat-form-field>
 
       <mat-form-field>
-        <mat-label>Select an category</mat-label>
-        <mat-select formControlName="category">
-          <mat-option>None</mat-option>
-          <mat-option value="front-end">Front-End</mat-option>
-          <mat-option value="back-end">Back-End</mat-option>
-        </mat-select>
-         <mat-error *ngIf="form.get('category')?.invalid">
-          Categoria é obrigatória.
-        </mat-error>
-      </mat-form-field>
+  <mat-label>Categoria</mat-label>
+  <mat-select formControlName="category">
+    <mat-option value="front-end">Front-End</mat-option>
+    <mat-option value="back-end">Back-End</mat-option>
+  </mat-select>
+  <mat-error *ngIf="form.get('category')?.invalid">
+    {{ getErrorMessage('category') }}
+  </mat-error>
+</mat-form-field>
     </form>
   </mat-card-content>
 

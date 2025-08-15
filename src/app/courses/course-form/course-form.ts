@@ -29,7 +29,7 @@ import { MatCardModule } from '@angular/material/card';
     MatInputModule,
     MatButtonModule,
     MatSelectModule,
-    MatCardModule
+    MatCardModule,
 ],
   templateUrl: './course-form.html',
   styleUrl: './course-form.scss',
