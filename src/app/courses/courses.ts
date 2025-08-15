@@ -1,21 +1,20 @@
-// src/app/courses/courses.ts
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { catchError, startWith } from 'rxjs/operators';
+import { catchError } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 
-// Imports diretos do Angular Material
+
 import { MatTableModule } from '@angular/material/table';
 import { MatCardModule } from '@angular/material/card';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
-// Import do componente standalone de diálogo de erro
-import { ErrorDialogComponent } from '../shared/components/error-dialog/error-dialog'; // Renomeei para seguir a convenção
+import { ErrorDialogComponent } from '../shared/components/error-dialog/error-dialog';
 
 import { Course } from './model/course';
 import { CoursesServices } from './service/courses.service';
@@ -26,35 +25,37 @@ import { CategoryPipe } from "../shared/pipes/category-pipe";
   standalone: true,
   imports: [
     CommonModule,
-    // Importe apenas os módulos que você realmente usa!
     MatTableModule,
     MatCardModule,
     MatToolbarModule,
     MatProgressSpinnerModule,
     MatIconModule,
     MatButtonModule,
-    CategoryPipe
+    CategoryPipe,
 ],
   templateUrl: './courses.html',
   styleUrl: './courses.scss',
 })
-export class CoursesComponent implements OnInit { // Renomeei para CoursesComponent
+export class CoursesComponent implements OnInit {
   courses$: Observable<Course[]> | null = null;
   displayedColumns: string[] = ['name', 'category', 'actions'];
+private readonly snackBar = inject(MatSnackBar);
+  durationInSeconds = 3000;
 
   constructor(
-    private _coursesService: CoursesServices,
+    private readonly _coursesService: CoursesServices,
     public dialog: MatDialog,
-    private router: Router,
-    private route: ActivatedRoute
+    private readonly router: Router,
+    private readonly route: ActivatedRoute,
   ) {}
 
   ngOnInit(): void {
-    // A inicialização foi movida para ngOnInit
+     this.refresh();
+  }
+
+  refresh(): void {
     this.courses$ = this._coursesService.list().pipe(
-      startWith([]),
-      catchError((error) => {
-        console.error('Erro ao carregar cursos:', error);
+      catchError(error => {
         this.openErrorDialog('Erro ao carregar os cursos');
         return of([]);
       })
@@ -70,7 +71,18 @@ export class CoursesComponent implements OnInit { // Renomeei para CoursesCompon
   }
 
   onDelete(course: Course): void {
-    console.log('Deletar curso:', course);
+
+    this._coursesService.remove(course.id!)
+      .subscribe({
+        next: () => {
+          this.snackBar.open('Curso removido com sucesso!', '', { duration: 3000 });
+          this.refresh();
+        },
+        error: (error) => {
+          console.error('Erro ao remover o curso:', error);
+          this.snackBar.open('Curso excluido', '', { duration: this.durationInSeconds, verticalPosition: 'top' });
+        }
+      });
   }
 
   openErrorDialog(errorMessage: string): void {

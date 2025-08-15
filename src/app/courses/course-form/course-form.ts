@@ -1,21 +1,18 @@
-import { Location } from '@angular/common';
-import { Component, OnInit, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { ActivatedRoute, Router } from '@angular/router';
-
-// Imports diretos do Angular Material
-import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
-
-import { CoursesServices } from '../service/courses.service';
-import { Course } from '../model/course';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { ActivatedRoute } from '@angular/router';
 import { first } from 'rxjs';
-import { MatCardModule } from '@angular/material/card';
+
+import { Course } from '../model/course';
+import { CoursesServices } from '../service/courses.service';
 
 @Component({
   selector: 'app-course-form',
@@ -23,7 +20,6 @@ import { MatCardModule } from '@angular/material/card';
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    // Módulos do Angular Material
     MatToolbarModule,
     MatFormFieldModule,
     MatInputModule,
@@ -34,9 +30,9 @@ import { MatCardModule } from '@angular/material/card';
   templateUrl: './course-form.html',
   styleUrl: './course-form.scss',
 })
-export class CourseFormComponent implements OnInit { // Renomeado para seguir a convenção
+export class CourseFormComponent implements OnInit {
 
-  form!: FormGroup; // Adicionado '!' para inicialização no construtor
+  form!: FormGroup;
   private readonly snackBar = inject(MatSnackBar);
   durationInSeconds = 3000;
 
@@ -48,13 +44,12 @@ export class CourseFormComponent implements OnInit { // Renomeado para seguir a 
   ) {}
 
   ngOnInit(): void {
-    // Pega os dados da rota (se houver) para verificar se é edição
+
     const course: Course = this.route.snapshot.data['course'];
 
     this.form = this.formBuilder.group({
-      // Adicionado id para a edição
       id: [course.id],
-      name: [course.name, [Validators.required, Validators.minLength(5), Validators.maxLength(100)]],
+      name: [course.name, [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
       category: [course.category, [Validators.required]]
     });
   }
