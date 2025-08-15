@@ -1,25 +1,27 @@
+// src/app/shared/components/error-dialog/error-dialog.component.ts
 import { Component, Inject } from '@angular/core';
-import { SharedModule } from '../../shared-module';
-import { MaterialModule } from '../../material-module';
-import {
-  MatDialog,
-  MAT_DIALOG_DATA,
-  MatDialogTitle,
-  MatDialogContent,
-} from '@angular/material/dialog';
+
+// Imports diretos do Angular Material
+import { MatDialogModule, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
+
+// Se você estiver usando um ícone, importe também
+// import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-error-dialog',
-  imports: [SharedModule,MaterialModule],
+  imports: [
+    MatDialogModule, // Este módulo já inclui MatDialogTitle e MatDialogContent
+    MatButtonModule, // Se você tiver um botão de "fechar" no seu HTML
+    // MatIconModule // Se você estiver usando ícones
+  ],
   standalone: true,
   templateUrl: './error-dialog.html',
-  styleUrl: './error-dialog.scss'
+  styleUrl: './error-dialog.scss',
 })
-export class ErrorDialog {
-
-  // O construtor é a chave aqui!
-  // Usamos @Inject(MAT_DIALOG_DATA) para receber os dados
-  // que foram passados no método `dialog.open()`.
-  // Tipar os dados com uma interface é uma boa prática.
-  constructor(@Inject(MAT_DIALOG_DATA) public data: { title: string, content: string }) { }
+export class ErrorDialogComponent {
+  constructor(
+    @Inject(MAT_DIALOG_DATA)
+    public data: { title: string; content: string }
+  ) {}
 }

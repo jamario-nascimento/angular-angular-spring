@@ -1,7 +1,7 @@
 // courses.service.ts
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { delay, first, tap } from 'rxjs';
+import { delay, first, Observable, tap } from 'rxjs';
 
 import { Course } from '../model/course';
 
@@ -11,16 +11,26 @@ import { Course } from '../model/course';
 export class CoursesServices {
 
   // Altere esta linha:
-  private readonly coursesUrl = 'api/courses';
+  private readonly API = 'api/courses';
 
   constructor(private readonly _httpClient: HttpClient){ }
 
   list() {
-    return this._httpClient.get<Course[]>(this.coursesUrl)
+    return this._httpClient.get<Course[]>(this.API)
     .pipe(
       first(),
-      delay(5000),
       tap(courses => console.log(courses))
     );
+  }
+
+  save(record: Partial<Course>){
+   return this._httpClient.post<Course>(this.API, record)
+   .pipe(
+    first()
+   )
+  }
+
+  findById(id: string): Observable<Course> {
+    return this._httpClient.get<Course>(`${this.API}/${id}`).pipe(first());
   }
 }
